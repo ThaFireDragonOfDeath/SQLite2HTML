@@ -80,21 +80,25 @@ QString DatabaseBackend_Vendor::applyTemplate(QString sTargetHtml)
 
 QString DatabaseBackend_Vendor::buildLinkList(QSqlQuery *objSqlQuery)
 {
-    int iResultSize = objSqlQuery->size();
     QString sVideoLinkList = "";
+    bool bIsFirstLine = true;
     objSqlQuery->seek(-1); //Reset position of the sqlquery
 
     //Loop over every result row
     while(objSqlQuery->next() == true)
     {
-        int iCurrentRow = objSqlQuery->at();
+        //If this is not the first entry add a newline before the line
+        if(bIsFirstLine == true)
+        {
+            bIsFirstLine = false;
+        }
+        else
+        {
+            sVideoLinkList.append("\n"); //Add newline before the line content
+        }
+        
         QString sVideoURL = objSqlQuery->value("VideoURL").toString();
         sVideoLinkList.append(sVideoURL);
-
-        if(iCurrentRow < iResultSize) //If this is not the last entry
-        {
-            sVideoLinkList.append("\n"); //Add newline
-        }
     }
 
     return sVideoLinkList;
