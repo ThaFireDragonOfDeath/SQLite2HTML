@@ -1,0 +1,12 @@
+Version 1.1:
+- Projekttitel im Programm setzbar
+- Anzahl der Einträge (neue Template Variable)
+- Zuletzt gesetzten Parameter werden gespeichert und beim nächsten Start automatisch eingetragen
+- Name der SQLite Tabelle und Link Text können in der ./Config/UserSettings.conf angepasst werden
+- Fehler (fehlerhafte HTML Ausgabe) beim Überschreiben von HTML Dateien mit Daten, welche eine geringere Größe haben als die zu überschreibene Datei, behoben.
+
+Version 1.0.1:
+- Fehler beim Linken unter Windows behoben
+
+Version 1.0:
+- Erstes Release

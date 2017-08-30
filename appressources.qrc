@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Config/UserSettings.conf</file>
+        <file>Template/Template.html</file>
+    </qresource>
+</RCC>

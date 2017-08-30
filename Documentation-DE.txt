@@ -1,0 +1,138 @@
+- Allgemeine Informationen -
+Name:
+SQLite2HTML
+
+Aufgabe:
+Das Programm hat die Aufgabe SQLite Datenbanken mit einer vordefinierten Struktur in eine gültige HTML Seite umzuwandeln.
+Zu dieses Zeitpunkt ist dieses Programm noch weitgehend Projektspezifisch.
+
+Sprache:
+Deutsch
+
+Version:
+1.1
+
+Autor:
+Voldracarno Draconor (ThaFireDragonOfDeath)
+
+Lizenz:
+GPLv3
+
+- Benutzer Informationen -
+Bedienung:
+1. Sofern ein anderes HTML Template erwünscht ist: ./Template/Template.html anpassen
+2. Auf "Auswählen" neben dem Textfeld für den Datenbankpfad klicken
+3. Die gewünschte Datenbank öffnen
+4. Auf "Auswählen" neben dem Textfeld für den Speicherort der generierten HTML Datei klicken und den gewünschten Speicherpfad setzen (optional)
+5. Auf "Auswählen" neben dem Textfeld für den Speicherort der generierten Linkliste klicken und den gewünschten Speicherpfad setzen (optional)
+6. Titel des Projektes eintragen
+7. Auf "Umwandeln" klicken und kurz warten bis der Vorgang abgeschlossen ist
+
+Einstellungen:
+Einstellungen können in der Datei ./Config/UserSettings.conf vorgenummen werden. Dazu die Datei mit einem einfachen Texteditor (Notepad++) öffnen und bearbeiten.
+
+Einstellungen-Schema:
+Die Einstellungen werden nach dem Schema Key=Value in der Datei abgelegt. Zeilen, die mit einem Leerzeichen oder einem "#" anfangen werden ignoriert.
+Ein Zeilenumbruch trennt zwei verschiedene Einträge voneinander.
+
+Einstellungen-Einträge:
+LinkText - Text welcher als klickbarer Link angezeigt wird
+ProjectTableName - Name der Tabelle mit den Daten in der SQLite Datenbank
+RemenberLastParameters - Boolsche Angabe (true oder false), ob die eingegebenen Parameter beim Beenden gespeichert und beim nächsten Start automatisch eingetragen werden sollen
+
+Einstellungen - Weitere Informationen:
+Sind die Einstellungsdateien noch nicht vorhanden, so werden diese beim Start mit Defaultwerten erzeugt.
+Sind in der UserSettings.conf benötigte Werte nicht gesetzt, so werden diese beim Start mit mit Defaulteinstellungen hinzugefügt.
+Schlägt mindestens einer dieser Vorgänge fehl, kann das Programm nicht gestartet werden.
+
+Weitere Dateien im Config Ordner:
+InternalStore.conf - Enthält interne Einträge vom Programm (gespeicherte Eingaben) und sollte daher nicht von Hand bearbeitet werden.
+
+Bekannte Fehler in dieser Version:
+Keine
+
+Datenschutz:
+Es werden von diesem Programm keine Daten gesammelt und über das Internet versendet.
+
+Werbung:
+Es wird keine Werbung im Programm eingeblendet oder auf dem Computer platziert.
+
+Server Abhängigkeiten:
+Dieses Programm verwendet keine Online Ressourcen und kommuniziert nicht mit eigenen oder fremden Servern im Internet. Es kann daher auch ohne Internetverbindung verwendet werden.
+
+Template Symbole:
+:EntryCount - Wird durch die Anzahl der Einträge ersetzt
+:ProjectTitle - Wird durch den Titel des Projektes ersetzt
+:VideoTableContent - Wird durch den Inhalt der Tabelle ersetzt und muss innerhalb eines <table> Tags stehen
+
+Weitere Informationen zu den Templates:
+Eine Referenzdatei befindet sich im Ordner "Template" mit dem Dateinamen "Template.html".
+Wenn die Datei "[Pfad der ausführbaren Datei]/Template/Template.html" existiert, wird diese als Template benutzt, andernfalls wird die in der ausführbaren Datei eingebettete Datei verwendet.
+Seit Version 1.1 kopiert sich die Template Datei, sofern diese nicht schon existiert, beim Start automatisch in den angegebenen Pfad.
+
+SQLite Datenbank Struktur:
+Tabelle: VideoEntrys
+Spalten: EntryID (Integer), VideoName (Text), VideoDate (Text), VideoQuality (Integer), VideoURL (Text), VideoDescURL (Text)
+Create Statement: CREATE TABLE `VideoEntrys` ( `EntryID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `VideoName` TEXT NOT NULL UNIQUE, `VideoDate` TEXT, `VideoQuality` INTEGER NOT NULL, `VideoURL` TEXT UNIQUE, `VideoDescURL` TEXT UNIQUE )
+
+Bedeutung der Spalten:
+EntryID: Ist eine Zahl, welche die Datenreihe eindeutig identifiziert. Diese wird beim Erstellen einer neuen Zeile automatisch gesetzt und sollte nicht verändert werden.
+VideoName: Ist ein Text, welcher den Namen des Videos angibt. Dieser darf nicht leer sein und muss einmalig sein.
+VideoDate: Gibt das Datum der Veröffentlichung an und muss, sofern angegeben als Text nach ISO8601 im Format YYYY-MM-DD sein.
+VideoQuality: Ist eine Zahl, welche die Auflösung des Videos angibt. Dabei enthält der Wert die Anzahl der Pixel in der Höhe. Beispiele: 720 (für HD) und 1080 (für FullHD)
+VideoURL: Ist ein Text, welcher die URL enthält, wo sich das Video befindet. Dieser Wert kann leer sein.
+VideoDescURL: Ist ein Text, welcher die URL enthält, wo sich die Beschreibung des Videos befindet. Dieser Wert kann leer sein.
+
+Weitere Informationen zu SQLite:
+Eine Referenzdatei befindet sich im Ordner "Reference" mit dem Dateinamen "Reference-Database.db".
+
+- Entwickler Informationen -
+Anpassungsmöglichkeiten im Quellcode:
+Tabellenkopf: Einträge werden statisch hinzugefügt (DatabaseBackend_Vendor::parseDatabasetoHtml)
+
+Memory Einträge:
+-Parameter Speicher-
+DatabasePath: Pfad der Datenbank (wird im MainWindow::on_btnStartConvert_clicked gesetzt)
+HtmlFilePath: HTML Speicherpfad (wird im MainWindow::on_btnStartConvert_clicked gesetzt)
+LinkListPath: Speicherpfad der Linkliste (wird im MainWindow::on_btnStartConvert_clicked gesetzt)
+LinkText: Siehe Einstellungen-Einträge
+ProjectTableName: Name der zu lesenden Tabelle in der SQLite Datenbank (wird im MainWindow::on_btnStartConvert_clicked gesetzt)
+ProjectTitle: Titel des Projektes (wird im MainWindow::on_btnStartConvert_clicked gesetzt)
+ResultEntryCount: Anzahl der Einträge (wird in DatabaseBackend_Vendor::buildTableContent gesetzt)
+
+-Config Speicher- (Enthält die Benutzereinstellungen, welche beim Start gelesen werden)
+Siehe Einstellungen-Einträge
+
+-Interner Speicher- (enthält die vom Benutzer eigegebenen Daten, werden beim Beenden gespeichert und beim Start aus der Datei gelesen, sofern die Option aktiviert ist)
+DatabasePath: Siehe oben
+HtmlFilePath: Siehe oben
+LinkListPath: Siehe oben
+ProjectTitle: Siehe oben
+
+Programm kompilieren:
+Linux:
+1. Mit der Konsole zum Ordner mit den Quellen navigieren
+2. qmake
+3. make
+4. Benötigten Dateien in einen Ordner kopieren
+
+Windows:
+1. Qt Umgebung und IDE installieren (https://www.qt.io/download-open-source/#section-2)
+2. Projekt Datei (.pro) mit dem Qt Creator öffnen
+3. Projekt konfigurieren
+4. Build Typ auf Release setzen
+5. Build starten
+6. Benötigte Dateien in einen Ordner kopieren
+
+Benötigte Dateien und Ordner zum Starten des Programms:
+Ausführbare Datei des Programms
+Bibliotheken (Windows): Qt5Core.dll, Qt5Gui.dll, Qt5Sql.dll, Qt5Widgets.dll, libgcc_s_dw2-1.dll, libstdc++-6, libwinpthread-1, platforms/qwindows.dll, sqldrivers/qsqlite.dll
+Bibliotheken (Linux): Keine, da sich diese, sofern installiert, im Systempfad befinden
+Konfigurationsdateien: Siehe Einstellungen - Weitere Informationen
+Lizenz Datei (empfohlen): LICENSE.txt
+Dokumentation (empfohlen): Dokumentation.txt, CHANGELOG.txt
+Referenzordner (empfohlen): Reference
+
+Geplante Funktionen:
+Programm für generische Zwecke umgestalten
+Englische Übersetzung
