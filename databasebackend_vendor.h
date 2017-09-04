@@ -20,11 +20,13 @@ signals:
     void sendStatusMessage(QString sStatusMessage);
 
 private:
+    QString addMirror(QString sMirrorLink, int iMirrorNumber);
     QString addTableHeader(QString sTargetHtml, QString sTableHeader); //Add one HTML table Head entry
     QString addTableData(QString sTargetHtml, QString sTableData); //Add one HTML entry
     QString applyTemplate(QString sTargetHtml);
     QString beginRow(QString sTargetHtml); //Begin a row in an HTML table
     QString buildLinkList(QSqlQuery* objSqlQuery);
+    QString buildMirrors(QString sTargetHtml, QSqlQuery* objSqlQuery);
     QString buildTableContent(QString sCurrentHtmlString, QSqlQuery* objSqlQuery);
     QString buildTableHead(QString sCurrentHtmlString); //Build the header of the Table
     bool checkFileExist(QString sFilePath);

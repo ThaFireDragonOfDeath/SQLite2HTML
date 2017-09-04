@@ -10,6 +10,13 @@ DatabaseBackend_Vendor::~DatabaseBackend_Vendor()
 
 }
 
+QString DatabaseBackend_Vendor::addMirror(QString sMirrorLink, int iMirrorNumber)
+{
+    QString sMirrorLinkText = "Mirror-" + QString::number(iMirrorNumber + 1);
+    QString sMirrorLinkHtml = parseToLink(sMirrorLink, sMirrorLinkText);
+    return sMirrorLinkHtml;
+}
+
 QString DatabaseBackend_Vendor::addTableData(QString sTargetHtml, QString sTableData)
 {
     QString sTableDataHtml = "<td>" + sTableData + "</td>";
@@ -104,6 +111,30 @@ QString DatabaseBackend_Vendor::buildLinkList(QSqlQuery *objSqlQuery)
     return sVideoLinkList;
 }
 
+QString DatabaseBackend_Vendor::buildMirrors(QString sTargetHtml, QSqlQuery *objSqlQuery)
+{
+    int iMirrorCounter = 0;
+    QString sCurrentMirrorLink = "";
+    QString sReturn = sTargetHtml;
+
+    do
+    {
+        QString sMirrorHead = "VideoURL-Mirror-" + QString::number(iMirrorCounter);
+        sCurrentMirrorLink = objSqlQuery->value(sMirrorHead).toString();
+
+        QString sMirrorHtml = "";
+        if(sCurrentMirrorLink != "") //If field exist
+        {
+            sMirrorHtml = addMirror(sCurrentMirrorLink, iMirrorCounter); //Get mirror html string
+            sReturn += ", " + sMirrorHtml;
+        }
+
+        iMirrorCounter++;
+    } while(sCurrentMirrorLink != "");
+
+    return sReturn;
+}
+
 QString DatabaseBackend_Vendor::buildTableContent(QString sCurrentHtmlString, QSqlQuery *objSqlQuery)
 {
     objSqlQuery->seek(-1); //Reset position of the sqlquery
@@ -125,6 +156,9 @@ QString DatabaseBackend_Vendor::buildTableContent(QString sCurrentHtmlString, QS
         //Convert the long URL in a short clickable text
         sVideoURL = parseToLink(sVideoURL, sLinkText);
         sVideoDescURL = parseToLink(sVideoDescURL, sLinkText);
+
+        //Build mirrors
+        sVideoURL = buildMirrors(sVideoURL, objSqlQuery);
 
         //Build the table entrys
         sCurrentHtmlString = beginRow(sCurrentHtmlString);
